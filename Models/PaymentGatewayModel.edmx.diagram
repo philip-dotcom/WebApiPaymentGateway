@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="be95527546584c468c28c47060564653" Name="Diagram1">
+        <EntityTypeShape EntityType="MerchantPayLiteModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.ApiKey" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.Customer" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.Merchant" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.PaymentMethod" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.Refund" Width="1.5" PointX="9.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.RefundStatu" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.Transaction" Width="1.5" PointX="7.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.TransactionStatu" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.TransactionStatusHistory" Width="1.5" PointX="12.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.Wallet" Width="1.5" PointX="3" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.WalletLedger" Width="1.5" PointX="12" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MerchantPayLiteModel.WebhookEvent" Width="1.5" PointX="9.75" PointY="16.375" IsExpanded="true" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__ApiKey__Merchant__1A14E395" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Customer__Mercha__1FCDBCEB" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__PaymentMe__Custo__239E4DCF" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__Custo__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__Merch__2B3F6F97" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Wallet__Merchant__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__Payme__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Refund__StatusCo__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Refund__Transact__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK_Ledger_Refund" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__Statu__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__Trans__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__WalletLed__Trans__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__WebhookEv__Trans__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__Transacti__ToSta__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="MerchantPayLiteModel.FK__WalletLed__Walle__48CFD27E" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
