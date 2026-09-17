@@ -12,44 +12,36 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Transaction
+    public partial class InternalUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Transaction()
+        public InternalUser()
         {
+            this.AuditLogs = new HashSet<AuditLog>();
+            this.ComplianceVerifications = new HashSet<ComplianceVerification>();
             this.FraudFlags = new HashSet<FraudFlag>();
-            this.PayoutTransactions = new HashSet<PayoutTransaction>();
             this.Refunds = new HashSet<Refund>();
             this.SupportTickets = new HashSet<SupportTicket>();
-            this.WalletLedgerEntries = new HashSet<WalletLedgerEntry>();
         }
     
-        public long TransactionId { get; set; }
-        public int MerchantId { get; set; }
-        public Nullable<int> CustomerId { get; set; }
-        public int PaymentRequestId { get; set; }
-        public long PaymentAttemptId { get; set; }
-        public string Reference { get; set; }
-        public string PaymentMethod { get; set; }
-        public decimal Amount { get; set; }
-        public string Currency { get; set; }
-        public string Status { get; set; }
-        public string Environment { get; set; }
-        public System.DateTime OccurredAt { get; set; }
+        public int InternalUserId { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public int RoleId { get; set; }
+        public bool IsActive { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
-        public virtual Customer Customer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AuditLog> AuditLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComplianceVerification> ComplianceVerifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FraudFlag> FraudFlags { get; set; }
-        public virtual Merchant Merchant { get; set; }
-        public virtual PaymentAttempt PaymentAttempt { get; set; }
-        public virtual PaymentRequest PaymentRequest { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PayoutTransaction> PayoutTransactions { get; set; }
+        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Refund> Refunds { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SupportTicket> SupportTickets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WalletLedgerEntry> WalletLedgerEntries { get; set; }
     }
 }

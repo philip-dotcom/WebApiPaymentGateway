@@ -12,20 +12,21 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WalletLedger
+    public partial class SupportTicket
     {
-        public long LedgerID { get; set; }
-        public int WalletID { get; set; }
-        public Nullable<long> TransactionID { get; set; }
-        public Nullable<long> RefundID { get; set; }
-        public string EntryType { get; set; }
-        public decimal Amount { get; set; }
-        public decimal BalanceAfter { get; set; }
-        public string Description { get; set; }
+        public int TicketId { get; set; }
+        public Nullable<int> MerchantId { get; set; }
+        public Nullable<int> CustomerId { get; set; }
+        public Nullable<long> TransactionId { get; set; }
+        public Nullable<int> AssignedInternalUserId { get; set; }
+        public string Subject { get; set; }
+        public string Status { get; set; }
         public System.DateTime CreatedAt { get; set; }
+        public Nullable<System.DateTime> ResolvedAt { get; set; }
     
-        public virtual Refund Refund { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual InternalUser InternalUser { get; set; }
+        public virtual Merchant Merchant { get; set; }
         public virtual Transaction Transaction { get; set; }
-        public virtual Wallet Wallet { get; set; }
     }
 }

@@ -12,16 +12,16 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TransactionStatusHistory
+    public partial class ComplianceDocument
     {
-        public long HistoryID { get; set; }
-        public long TransactionID { get; set; }
-        public string FromStatus { get; set; }
-        public string ToStatus { get; set; }
-        public System.DateTime ChangedAt { get; set; }
-        public string Reason { get; set; }
+        public int DocumentId { get; set; }
+        public int VerificationId { get; set; }
+        public string DocumentType { get; set; }
+        public string FileStoragePath { get; set; }
+        public string Status { get; set; }
+        public string RejectionNote { get; set; }
+        public System.DateTime UploadedAt { get; set; }
     
-        public virtual Transaction Transaction { get; set; }
-        public virtual TransactionStatu TransactionStatu { get; set; }
+        public virtual ComplianceVerification ComplianceVerification { get; set; }
     }
 }

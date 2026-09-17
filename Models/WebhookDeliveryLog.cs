@@ -12,19 +12,17 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WebhookEvent
+    public partial class WebhookDeliveryLog
     {
-        public long WebhookEventID { get; set; }
-        public string ProcessorName { get; set; }
+        public long DeliveryId { get; set; }
+        public int WebhookId { get; set; }
         public string EventType { get; set; }
-        public string ProcessorEventID { get; set; }
-        public Nullable<long> TransactionID { get; set; }
-        public string Payload { get; set; }
-        public bool SignatureValid { get; set; }
-        public Nullable<System.DateTime> ProcessedAt { get; set; }
-        public string ProcessingError { get; set; }
-        public System.DateTime ReceivedAt { get; set; }
+        public string PayloadJson { get; set; }
+        public Nullable<int> ResponseStatusCode { get; set; }
+        public byte AttemptNumber { get; set; }
+        public bool Success { get; set; }
+        public System.DateTime DeliveredAt { get; set; }
     
-        public virtual Transaction Transaction { get; set; }
+        public virtual WebhookEndpoint WebhookEndpoint { get; set; }
     }
 }

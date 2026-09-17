@@ -17,31 +17,52 @@ namespace WebApiPaymentGateway.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Merchant()
         {
-            this.ApiKeys = new HashSet<ApiKey>();
+            this.ApiCredentials = new HashSet<ApiCredential>();
+            this.ComplianceVerifications = new HashSet<ComplianceVerification>();
             this.Customers = new HashSet<Customer>();
+            this.MerchantBankAccounts = new HashSet<MerchantBankAccount>();
+            this.MerchantUsers = new HashSet<MerchantUser>();
+            this.PaymentRequests = new HashSet<PaymentRequest>();
+            this.Payouts = new HashSet<Payout>();
+            this.SupportTickets = new HashSet<SupportTicket>();
             this.Transactions = new HashSet<Transaction>();
             this.Wallets = new HashSet<Wallet>();
+            this.WebhookEndpoints = new HashSet<WebhookEndpoint>();
         }
     
-        public int MerchantID { get; set; }
-        public System.Guid MerchantUID { get; set; }
-        public string BusinessName { get; set; }
+        public int MerchantId { get; set; }
+        public string LegalBusinessName { get; set; }
+        public string TradingName { get; set; }
         public string ContactEmail { get; set; }
-        public string Password { get; set; }
         public string ContactPhone { get; set; }
-        public string SettlementBankCode { get; set; }
-        public string SettlementAccountNo { get; set; }
+        public string BusinessCategory { get; set; }
+        public string RegisteredAddress { get; set; }
+        public string Mode { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public System.DateTime UpdatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ApiKey> ApiKeys { get; set; }
+        public virtual ICollection<ApiCredential> ApiCredentials { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComplianceVerification> ComplianceVerifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MerchantBankAccount> MerchantBankAccounts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MerchantUser> MerchantUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PaymentRequest> PaymentRequests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payout> Payouts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wallet> Wallets { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WebhookEndpoint> WebhookEndpoints { get; set; }
     }
 }

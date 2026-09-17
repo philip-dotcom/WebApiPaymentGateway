@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class RolesController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/Roles
+        public IQueryable<Role> GetRoles()
         {
-            return db.Customers;
+            return db.Roles;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/Roles/5
+        [ResponseType(typeof(Role))]
+        public IHttpActionResult GetRole(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Role role = db.Roles.Find(id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(role);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Roles/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutRole(int id, Role role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != role.RoleId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(role).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!RoleExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/Roles
+        [ResponseType(typeof(Role))]
+        public IHttpActionResult PostRole(Role role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.Roles.Add(role);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = role.RoleId }, role);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/Roles/5
+        [ResponseType(typeof(Role))]
+        public IHttpActionResult DeleteRole(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Role role = db.Roles.Find(id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.Roles.Remove(role);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(role);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool RoleExists(int id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.Roles.Count(e => e.RoleId == id) > 0;
         }
     }
 }

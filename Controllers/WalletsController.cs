@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class WalletsController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/Wallets
+        public IQueryable<Wallet> GetWallets()
         {
-            return db.Customers;
+            return db.Wallets;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/Wallets/5
+        [ResponseType(typeof(Wallet))]
+        public IHttpActionResult GetWallet(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Wallet wallet = db.Wallets.Find(id);
+            if (wallet == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(wallet);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Wallets/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutWallet(int id, Wallet wallet)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != wallet.WalletId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(wallet).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!WalletExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/Wallets
+        [ResponseType(typeof(Wallet))]
+        public IHttpActionResult PostWallet(Wallet wallet)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.Wallets.Add(wallet);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = wallet.WalletId }, wallet);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/Wallets/5
+        [ResponseType(typeof(Wallet))]
+        public IHttpActionResult DeleteWallet(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            Wallet wallet = db.Wallets.Find(id);
+            if (wallet == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.Wallets.Remove(wallet);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(wallet);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool WalletExists(int id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.Wallets.Count(e => e.WalletId == id) > 0;
         }
     }
 }

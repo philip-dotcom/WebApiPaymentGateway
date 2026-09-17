@@ -12,17 +12,18 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ApiKey
+    public partial class FraudFlag
     {
-        public int ApiKeyID { get; set; }
-        public int MerchantID { get; set; }
-        public byte[] KeyHash { get; set; }
-        public string KeyPrefix { get; set; }
-        public string Environment { get; set; }
-        public bool IsRevoked { get; set; }
+        public int FlagId { get; set; }
+        public long TransactionId { get; set; }
+        public Nullable<byte> RiskScore { get; set; }
+        public string FlagReason { get; set; }
+        public string Status { get; set; }
+        public Nullable<int> ReviewedByInternalUserId { get; set; }
         public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> RevokedAt { get; set; }
+        public Nullable<System.DateTime> ResolvedAt { get; set; }
     
-        public virtual Merchant Merchant { get; set; }
+        public virtual InternalUser InternalUser { get; set; }
+        public virtual Transaction Transaction { get; set; }
     }
 }

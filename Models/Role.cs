@@ -12,24 +12,19 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Wallet
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Wallet()
+        public Role()
         {
-            this.WalletLedgerEntries = new HashSet<WalletLedgerEntry>();
+            this.InternalUsers = new HashSet<InternalUser>();
         }
     
-        public int WalletId { get; set; }
-        public int MerchantId { get; set; }
-        public string Environment { get; set; }
-        public string Currency { get; set; }
-        public decimal AvailableBalance { get; set; }
-        public decimal PendingBalance { get; set; }
-        public System.DateTime UpdatedAt { get; set; }
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public string Description { get; set; }
     
-        public virtual Merchant Merchant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WalletLedgerEntry> WalletLedgerEntries { get; set; }
+        public virtual ICollection<InternalUser> InternalUsers { get; set; }
     }
 }

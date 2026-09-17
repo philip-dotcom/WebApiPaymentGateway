@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class PaymentAttemptsController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/PaymentAttempts
+        public IQueryable<PaymentAttempt> GetPaymentAttempts()
         {
-            return db.Customers;
+            return db.PaymentAttempts;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/PaymentAttempts/5
+        [ResponseType(typeof(PaymentAttempt))]
+        public IHttpActionResult GetPaymentAttempt(long id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            PaymentAttempt paymentAttempt = db.PaymentAttempts.Find(id);
+            if (paymentAttempt == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(paymentAttempt);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/PaymentAttempts/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutPaymentAttempt(long id, PaymentAttempt paymentAttempt)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != paymentAttempt.PaymentAttemptId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(paymentAttempt).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!PaymentAttemptExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/PaymentAttempts
+        [ResponseType(typeof(PaymentAttempt))]
+        public IHttpActionResult PostPaymentAttempt(PaymentAttempt paymentAttempt)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.PaymentAttempts.Add(paymentAttempt);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = paymentAttempt.PaymentAttemptId }, paymentAttempt);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/PaymentAttempts/5
+        [ResponseType(typeof(PaymentAttempt))]
+        public IHttpActionResult DeletePaymentAttempt(long id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            PaymentAttempt paymentAttempt = db.PaymentAttempts.Find(id);
+            if (paymentAttempt == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.PaymentAttempts.Remove(paymentAttempt);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(paymentAttempt);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool PaymentAttemptExists(long id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.PaymentAttempts.Count(e => e.PaymentAttemptId == id) > 0;
         }
     }
 }

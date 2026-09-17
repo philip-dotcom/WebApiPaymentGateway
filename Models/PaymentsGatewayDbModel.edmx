@@ -1,0 +1,2348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="paymentgatewaydbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApiCredentials">
+          <Key>
+            <PropertyRef Name="CredentialId" />
+          </Key>
+          <Property Name="CredentialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="Environment" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PublishableKey" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="SecretKeyHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SecretKeyLastFour" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="RotatedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="AuditLogId" />
+          </Key>
+          <Property Name="AuditLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InternalUserId" Type="int" />
+          <Property Name="MerchantUserId" Type="int" />
+          <Property Name="ActionType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="EntityType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="EntityId" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Details" Type="nvarchar(max)" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="45" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComplianceDocuments">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VerificationId" Type="int" Nullable="false" />
+          <Property Name="DocumentType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="FileStoragePath" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RejectionNote" Type="nvarchar" MaxLength="500" />
+          <Property Name="UploadedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComplianceVerifications">
+          <Key>
+            <PropertyRef Name="VerificationId" />
+          </Key>
+          <Property Name="VerificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="LegalStructure" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IndustrySector" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IsScumlRequired" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ProgressPercent" Type="tinyint" Nullable="false" />
+          <Property Name="RejectionReason" Type="nvarchar" MaxLength="1000" />
+          <Property Name="SubmittedAt" Type="datetime2" Precision="3" />
+          <Property Name="ReviewedAt" Type="datetime2" Precision="3" />
+          <Property Name="ReviewedByInternalUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="150" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="30" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="LastActivityAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="FraudFlags">
+          <Key>
+            <PropertyRef Name="FlagId" />
+          </Key>
+          <Property Name="FlagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" Nullable="false" />
+          <Property Name="RiskScore" Type="tinyint" />
+          <Property Name="FlagReason" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ReviewedByInternalUserId" Type="int" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="ResolvedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="InternalUsers">
+          <Key>
+            <PropertyRef Name="InternalUserId" />
+          </Key>
+          <Property Name="InternalUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MerchantBankAccounts">
+          <Key>
+            <PropertyRef Name="BankAccountId" />
+          </Key>
+          <Property Name="BankAccountId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="BankCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SettlementCycle" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsPrimary" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="VerifiedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="Merchants">
+          <Key>
+            <PropertyRef Name="MerchantId" />
+          </Key>
+          <Property Name="MerchantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LegalBusinessName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TradingName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ContactEmail" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="BusinessCategory" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="RegisteredAddress" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MerchantUsers">
+          <Key>
+            <PropertyRef Name="MerchantUserId" />
+          </Key>
+          <Property Name="MerchantUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="RoleOnAccount" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="LastLoginAt" Type="datetime2" Precision="3" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentAttempts">
+          <Key>
+            <PropertyRef Name="PaymentAttemptId" />
+          </Key>
+          <Property Name="PaymentAttemptId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentRequestId" Type="int" Nullable="false" />
+          <Property Name="AttemptNumber" Type="tinyint" Nullable="false" />
+          <Property Name="PaymentMethod" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="FailureReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProviderReference" Type="nvarchar" MaxLength="100" />
+          <Property Name="CardBrand" Type="nvarchar" MaxLength="20" />
+          <Property Name="CardLast4" Type="char" MaxLength="4" />
+          <Property Name="CardExpiryMonth" Type="tinyint" />
+          <Property Name="CardExpiryYear" Type="smallint" />
+          <Property Name="BankCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="UssdDialString" Type="nvarchar" MaxLength="60" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="CompletedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="PaymentRequests">
+          <Key>
+            <PropertyRef Name="PaymentRequestId" />
+          </Key>
+          <Property Name="PaymentRequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IdempotencyKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Currency" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Narration" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="SelectedPaymentMethod" Type="nvarchar" MaxLength="20" />
+          <Property Name="ExpiresAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payouts">
+          <Key>
+            <PropertyRef Name="PayoutId" />
+          </Key>
+          <Property Name="PayoutId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="BankAccountId" Type="int" Nullable="false" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="ScheduledFor" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="PaidAt" Type="datetime2" Precision="3" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PayoutTransactions">
+          <Key>
+            <PropertyRef Name="PayoutTransactionId" />
+          </Key>
+          <Property Name="PayoutTransactionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayoutId" Type="int" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Refunds">
+          <Key>
+            <PropertyRef Name="RefundId" />
+          </Key>
+          <Property Name="RefundId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="RequestedByMerchantUserId" Type="int" />
+          <Property Name="ApprovedByInternalUserId" Type="int" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="ProcessedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SupportTickets">
+          <Key>
+            <PropertyRef Name="TicketId" />
+          </Key>
+          <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="TransactionId" Type="bigint" />
+          <Property Name="AssignedInternalUserId" Type="int" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="ResolvedAt" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="PaymentRequestId" Type="int" Nullable="false" />
+          <Property Name="PaymentAttemptId" Type="bigint" Nullable="false" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PaymentMethod" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Currency" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Environment" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="OccurredAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WalletLedgerEntries">
+          <Key>
+            <PropertyRef Name="LedgerEntryId" />
+          </Key>
+          <Property Name="LedgerEntryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WalletId" Type="int" Nullable="false" />
+          <Property Name="TransactionId" Type="bigint" />
+          <Property Name="PayoutId" Type="int" />
+          <Property Name="RefundId" Type="int" />
+          <Property Name="EntryType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BalanceAfter" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Wallets">
+          <Key>
+            <PropertyRef Name="WalletId" />
+          </Key>
+          <Property Name="WalletId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="Environment" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Currency" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="AvailableBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PendingBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebhookDeliveryLogs">
+          <Key>
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="DeliveryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WebhookId" Type="int" Nullable="false" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="PayloadJson" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ResponseStatusCode" Type="int" />
+          <Property Name="AttemptNumber" Type="tinyint" Nullable="false" />
+          <Property Name="Success" Type="bit" Nullable="false" />
+          <Property Name="DeliveredAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebhookEndpoints">
+          <Key>
+            <PropertyRef Name="WebhookId" />
+          </Key>
+          <Property Name="WebhookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MerchantId" Type="int" Nullable="false" />
+          <Property Name="Environment" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SigningSecretHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebhookSubscriptions">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WebhookId" Type="int" Nullable="false" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ApiCredentials_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="ApiCredentials" Type="Self.ApiCredentials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="ApiCredentials">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuditLogs_InternalUsers">
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="InternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuditLogs_MerchantUsers">
+          <End Role="MerchantUsers" Type="Self.MerchantUsers" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantUsers">
+              <PropertyRef Name="MerchantUserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="MerchantUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BankAccounts_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="MerchantBankAccounts" Type="Self.MerchantBankAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="MerchantBankAccounts">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compliance_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="ComplianceVerifications">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compliance_ReviewedBy">
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="0..1" />
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="ComplianceVerifications">
+              <PropertyRef Name="ReviewedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComplianceDocuments_Verification">
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerifications" Multiplicity="1" />
+          <End Role="ComplianceDocuments" Type="Self.ComplianceDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComplianceVerifications">
+              <PropertyRef Name="VerificationId" />
+            </Principal>
+            <Dependent Role="ComplianceDocuments">
+              <PropertyRef Name="VerificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customers_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FraudFlags_ReviewedBy">
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="0..1" />
+          <End Role="FraudFlags" Type="Self.FraudFlags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="FraudFlags">
+              <PropertyRef Name="ReviewedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FraudFlags_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
+          <End Role="FraudFlags" Type="Self.FraudFlags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="FraudFlags">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalUsers_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="InternalUsers">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MerchantUsers_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="MerchantUsers" Type="Self.MerchantUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="MerchantUsers">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentAttempts_PaymentRequests">
+          <End Role="PaymentRequests" Type="Self.PaymentRequests" Multiplicity="1" />
+          <End Role="PaymentAttempts" Type="Self.PaymentAttempts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentRequests">
+              <PropertyRef Name="PaymentRequestId" />
+            </Principal>
+            <Dependent Role="PaymentAttempts">
+              <PropertyRef Name="PaymentRequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentRequests_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="PaymentRequests" Type="Self.PaymentRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="PaymentRequests">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentRequests_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="PaymentRequests" Type="Self.PaymentRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="PaymentRequests">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payouts_BankAccounts">
+          <End Role="MerchantBankAccounts" Type="Self.MerchantBankAccounts" Multiplicity="1" />
+          <End Role="Payouts" Type="Self.Payouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantBankAccounts">
+              <PropertyRef Name="BankAccountId" />
+            </Principal>
+            <Dependent Role="Payouts">
+              <PropertyRef Name="BankAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payouts_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="Payouts" Type="Self.Payouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Payouts">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PayoutTransactions_Payouts">
+          <End Role="Payouts" Type="Self.Payouts" Multiplicity="1" />
+          <End Role="PayoutTransactions" Type="Self.PayoutTransactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payouts">
+              <PropertyRef Name="PayoutId" />
+            </Principal>
+            <Dependent Role="PayoutTransactions">
+              <PropertyRef Name="PayoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PayoutTransactions_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
+          <End Role="PayoutTransactions" Type="Self.PayoutTransactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="PayoutTransactions">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_ApprovedBy">
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refunds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="ApprovedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_RequestedBy">
+          <End Role="MerchantUsers" Type="Self.MerchantUsers" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refunds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantUsers">
+              <PropertyRef Name="MerchantUserId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="RequestedByMerchantUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="1" />
+          <End Role="Refunds" Type="Self.Refunds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_AssignedTo">
+          <End Role="InternalUsers" Type="Self.InternalUsers" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="AssignedInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_PaymentAttempts">
+          <End Role="PaymentAttempts" Type="Self.PaymentAttempts" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAttempts">
+              <PropertyRef Name="PaymentAttemptId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="PaymentAttemptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_PaymentRequests">
+          <End Role="PaymentRequests" Type="Self.PaymentRequests" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentRequests">
+              <PropertyRef Name="PaymentRequestId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="PaymentRequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Refunds">
+          <End Role="Refunds" Type="Self.Refunds" Multiplicity="0..1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refunds">
+              <PropertyRef Name="RefundId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="RefundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Transactions">
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="0..1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Wallets">
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Wallets">
+              <PropertyRef Name="WalletId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="WalletId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wallets_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="Wallets" Type="Self.Wallets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Wallets">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookDeliveryLogs_Webhook">
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoints" Multiplicity="1" />
+          <End Role="WebhookDeliveryLogs" Type="Self.WebhookDeliveryLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebhookEndpoints">
+              <PropertyRef Name="WebhookId" />
+            </Principal>
+            <Dependent Role="WebhookDeliveryLogs">
+              <PropertyRef Name="WebhookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookEndpoints_Merchants">
+          <End Role="Merchants" Type="Self.Merchants" Multiplicity="1" />
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="WebhookEndpoints">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookSubscriptions_Webhook">
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoints" Multiplicity="1" />
+          <End Role="WebhookSubscriptions" Type="Self.WebhookSubscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebhookEndpoints">
+              <PropertyRef Name="WebhookId" />
+            </Principal>
+            <Dependent Role="WebhookSubscriptions">
+              <PropertyRef Name="WebhookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="paymentgatewaydbModelStoreContainer">
+          <EntitySet Name="ApiCredentials" EntityType="Self.ApiCredentials" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComplianceDocuments" EntityType="Self.ComplianceDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComplianceVerifications" EntityType="Self.ComplianceVerifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FraudFlags" EntityType="Self.FraudFlags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternalUsers" EntityType="Self.InternalUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MerchantBankAccounts" EntityType="Self.MerchantBankAccounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Merchants" EntityType="Self.Merchants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MerchantUsers" EntityType="Self.MerchantUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentAttempts" EntityType="Self.PaymentAttempts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentRequests" EntityType="Self.PaymentRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payouts" EntityType="Self.Payouts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PayoutTransactions" EntityType="Self.PayoutTransactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refunds" EntityType="Self.Refunds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SupportTickets" EntityType="Self.SupportTickets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WalletLedgerEntries" EntityType="Self.WalletLedgerEntries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Wallets" EntityType="Self.Wallets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebhookDeliveryLogs" EntityType="Self.WebhookDeliveryLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebhookEndpoints" EntityType="Self.WebhookEndpoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebhookSubscriptions" EntityType="Self.WebhookSubscriptions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApiCredentials_Merchants" Association="Self.FK_ApiCredentials_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="ApiCredentials" EntitySet="ApiCredentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuditLogs_InternalUsers" Association="Self.FK_AuditLogs_InternalUsers">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuditLogs_MerchantUsers" Association="Self.FK_AuditLogs_MerchantUsers">
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BankAccounts_Merchants" Association="Self.FK_BankAccounts_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="MerchantBankAccounts" EntitySet="MerchantBankAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compliance_Merchants" Association="Self.FK_Compliance_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compliance_ReviewedBy" Association="Self.FK_Compliance_ReviewedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComplianceDocuments_Verification" Association="Self.FK_ComplianceDocuments_Verification">
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+            <End Role="ComplianceDocuments" EntitySet="ComplianceDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_Merchants" Association="Self.FK_Customers_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FraudFlags_ReviewedBy" Association="Self.FK_FraudFlags_ReviewedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="FraudFlags" EntitySet="FraudFlags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FraudFlags_Transactions" Association="Self.FK_FraudFlags_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="FraudFlags" EntitySet="FraudFlags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalUsers_Roles" Association="Self.FK_InternalUsers_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MerchantUsers_Merchants" Association="Self.FK_MerchantUsers_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentAttempts_PaymentRequests" Association="Self.FK_PaymentAttempts_PaymentRequests">
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+            <End Role="PaymentAttempts" EntitySet="PaymentAttempts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentRequests_Customers" Association="Self.FK_PaymentRequests_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentRequests_Merchants" Association="Self.FK_PaymentRequests_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payouts_BankAccounts" Association="Self.FK_Payouts_BankAccounts">
+            <End Role="MerchantBankAccounts" EntitySet="MerchantBankAccounts" />
+            <End Role="Payouts" EntitySet="Payouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payouts_Merchants" Association="Self.FK_Payouts_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Payouts" EntitySet="Payouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PayoutTransactions_Payouts" Association="Self.FK_PayoutTransactions_Payouts">
+            <End Role="Payouts" EntitySet="Payouts" />
+            <End Role="PayoutTransactions" EntitySet="PayoutTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PayoutTransactions_Transactions" Association="Self.FK_PayoutTransactions_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="PayoutTransactions" EntitySet="PayoutTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_ApprovedBy" Association="Self.FK_Refunds_ApprovedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_RequestedBy" Association="Self.FK_Refunds_RequestedBy">
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_Transactions" Association="Self.FK_Refunds_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_AssignedTo" Association="Self.FK_SupportTickets_AssignedTo">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Customers" Association="Self.FK_SupportTickets_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Merchants" Association="Self.FK_SupportTickets_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Transactions" Association="Self.FK_SupportTickets_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Customers" Association="Self.FK_Transactions_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Merchants" Association="Self.FK_Transactions_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_PaymentAttempts" Association="Self.FK_Transactions_PaymentAttempts">
+            <End Role="PaymentAttempts" EntitySet="PaymentAttempts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_PaymentRequests" Association="Self.FK_Transactions_PaymentRequests">
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Refunds" Association="Self.FK_WalletLedger_Refunds">
+            <End Role="Refunds" EntitySet="Refunds" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Transactions" Association="Self.FK_WalletLedger_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Wallets" Association="Self.FK_WalletLedger_Wallets">
+            <End Role="Wallets" EntitySet="Wallets" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wallets_Merchants" Association="Self.FK_Wallets_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Wallets" EntitySet="Wallets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookDeliveryLogs_Webhook" Association="Self.FK_WebhookDeliveryLogs_Webhook">
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+            <End Role="WebhookDeliveryLogs" EntitySet="WebhookDeliveryLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookEndpoints_Merchants" Association="Self.FK_WebhookEndpoints_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookSubscriptions_Webhook" Association="Self.FK_WebhookSubscriptions_Webhook">
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+            <End Role="WebhookSubscriptions" EntitySet="WebhookSubscriptions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="paymentgatewaydbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ApiCredential">
+          <Key>
+            <PropertyRef Name="CredentialId" />
+          </Key>
+          <Property Name="CredentialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="Environment" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PublishableKey" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SecretKeyHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SecretKeyLastFour" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RotatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_ApiCredentials_Merchants" FromRole="ApiCredentials" ToRole="Merchants" />
+        </EntityType>
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="AuditLogId" />
+          </Key>
+          <Property Name="AuditLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InternalUserId" Type="Int32" />
+          <Property Name="MerchantUserId" Type="Int32" />
+          <Property Name="ActionType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EntityType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EntityId" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IPAddress" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="InternalUser" Relationship="Self.FK_AuditLogs_InternalUsers" FromRole="AuditLogs" ToRole="InternalUsers" />
+          <NavigationProperty Name="MerchantUser" Relationship="Self.FK_AuditLogs_MerchantUsers" FromRole="AuditLogs" ToRole="MerchantUsers" />
+        </EntityType>
+        <EntityType Name="ComplianceDocument">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VerificationId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FileStoragePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RejectionNote" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UploadedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ComplianceVerification" Relationship="Self.FK_ComplianceDocuments_Verification" FromRole="ComplianceDocuments" ToRole="ComplianceVerifications" />
+        </EntityType>
+        <EntityType Name="ComplianceVerification">
+          <Key>
+            <PropertyRef Name="VerificationId" />
+          </Key>
+          <Property Name="VerificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="LegalStructure" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IndustrySector" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsScumlRequired" Type="Boolean" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProgressPercent" Type="Byte" Nullable="false" />
+          <Property Name="RejectionReason" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="SubmittedAt" Type="DateTime" Precision="3" />
+          <Property Name="ReviewedAt" Type="DateTime" Precision="3" />
+          <Property Name="ReviewedByInternalUserId" Type="Int32" />
+          <NavigationProperty Name="ComplianceDocuments" Relationship="Self.FK_ComplianceDocuments_Verification" FromRole="ComplianceVerifications" ToRole="ComplianceDocuments" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_Compliance_Merchants" FromRole="ComplianceVerifications" ToRole="Merchants" />
+          <NavigationProperty Name="InternalUser" Relationship="Self.FK_Compliance_ReviewedBy" FromRole="ComplianceVerifications" ToRole="InternalUsers" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastActivityAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_Customers_Merchants" FromRole="Customers" ToRole="Merchants" />
+          <NavigationProperty Name="PaymentRequests" Relationship="Self.FK_PaymentRequests_Customers" FromRole="Customers" ToRole="PaymentRequests" />
+          <NavigationProperty Name="SupportTickets" Relationship="Self.FK_SupportTickets_Customers" FromRole="Customers" ToRole="SupportTickets" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Customers" FromRole="Customers" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="FraudFlag">
+          <Key>
+            <PropertyRef Name="FlagId" />
+          </Key>
+          <Property Name="FlagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionId" Type="Int64" Nullable="false" />
+          <Property Name="RiskScore" Type="Byte" />
+          <Property Name="FlagReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ReviewedByInternalUserId" Type="Int32" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResolvedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="InternalUser" Relationship="Self.FK_FraudFlags_ReviewedBy" FromRole="FraudFlags" ToRole="InternalUsers" />
+          <NavigationProperty Name="Transaction" Relationship="Self.FK_FraudFlags_Transactions" FromRole="FraudFlags" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="InternalUser">
+          <Key>
+            <PropertyRef Name="InternalUserId" />
+          </Key>
+          <Property Name="InternalUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AuditLogs" Relationship="Self.FK_AuditLogs_InternalUsers" FromRole="InternalUsers" ToRole="AuditLogs" />
+          <NavigationProperty Name="ComplianceVerifications" Relationship="Self.FK_Compliance_ReviewedBy" FromRole="InternalUsers" ToRole="ComplianceVerifications" />
+          <NavigationProperty Name="FraudFlags" Relationship="Self.FK_FraudFlags_ReviewedBy" FromRole="InternalUsers" ToRole="FraudFlags" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_InternalUsers_Roles" FromRole="InternalUsers" ToRole="Roles" />
+          <NavigationProperty Name="Refunds" Relationship="Self.FK_Refunds_ApprovedBy" FromRole="InternalUsers" ToRole="Refunds" />
+          <NavigationProperty Name="SupportTickets" Relationship="Self.FK_SupportTickets_AssignedTo" FromRole="InternalUsers" ToRole="SupportTickets" />
+        </EntityType>
+        <EntityType Name="MerchantBankAccount">
+          <Key>
+            <PropertyRef Name="BankAccountId" />
+          </Key>
+          <Property Name="BankAccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="BankCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BankName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SettlementCycle" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VerifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_BankAccounts_Merchants" FromRole="MerchantBankAccounts" ToRole="Merchants" />
+          <NavigationProperty Name="Payouts" Relationship="Self.FK_Payouts_BankAccounts" FromRole="MerchantBankAccounts" ToRole="Payouts" />
+        </EntityType>
+        <EntityType Name="Merchant">
+          <Key>
+            <PropertyRef Name="MerchantId" />
+          </Key>
+          <Property Name="MerchantId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LegalBusinessName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TradingName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ContactEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContactPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BusinessCategory" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegisteredAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ApiCredentials" Relationship="Self.FK_ApiCredentials_Merchants" FromRole="Merchants" ToRole="ApiCredentials" />
+          <NavigationProperty Name="ComplianceVerifications" Relationship="Self.FK_Compliance_Merchants" FromRole="Merchants" ToRole="ComplianceVerifications" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customers_Merchants" FromRole="Merchants" ToRole="Customers" />
+          <NavigationProperty Name="MerchantBankAccounts" Relationship="Self.FK_BankAccounts_Merchants" FromRole="Merchants" ToRole="MerchantBankAccounts" />
+          <NavigationProperty Name="MerchantUsers" Relationship="Self.FK_MerchantUsers_Merchants" FromRole="Merchants" ToRole="MerchantUsers" />
+          <NavigationProperty Name="PaymentRequests" Relationship="Self.FK_PaymentRequests_Merchants" FromRole="Merchants" ToRole="PaymentRequests" />
+          <NavigationProperty Name="Payouts" Relationship="Self.FK_Payouts_Merchants" FromRole="Merchants" ToRole="Payouts" />
+          <NavigationProperty Name="SupportTickets" Relationship="Self.FK_SupportTickets_Merchants" FromRole="Merchants" ToRole="SupportTickets" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Merchants" FromRole="Merchants" ToRole="Transactions" />
+          <NavigationProperty Name="Wallets" Relationship="Self.FK_Wallets_Merchants" FromRole="Merchants" ToRole="Wallets" />
+          <NavigationProperty Name="WebhookEndpoints" Relationship="Self.FK_WebhookEndpoints_Merchants" FromRole="Merchants" ToRole="WebhookEndpoints" />
+        </EntityType>
+        <EntityType Name="MerchantUser">
+          <Key>
+            <PropertyRef Name="MerchantUserId" />
+          </Key>
+          <Property Name="MerchantUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleOnAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="LastLoginAt" Type="DateTime" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AuditLogs" Relationship="Self.FK_AuditLogs_MerchantUsers" FromRole="MerchantUsers" ToRole="AuditLogs" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_MerchantUsers_Merchants" FromRole="MerchantUsers" ToRole="Merchants" />
+          <NavigationProperty Name="Refunds" Relationship="Self.FK_Refunds_RequestedBy" FromRole="MerchantUsers" ToRole="Refunds" />
+        </EntityType>
+        <EntityType Name="PaymentAttempt">
+          <Key>
+            <PropertyRef Name="PaymentAttemptId" />
+          </Key>
+          <Property Name="PaymentAttemptId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentRequestId" Type="Int32" Nullable="false" />
+          <Property Name="AttemptNumber" Type="Byte" Nullable="false" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FailureReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderReference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CardBrand" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CardLast4" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="CardExpiryMonth" Type="Byte" />
+          <Property Name="CardExpiryYear" Type="Int16" />
+          <Property Name="BankCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UssdDialString" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CompletedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PaymentRequest" Relationship="Self.FK_PaymentAttempts_PaymentRequests" FromRole="PaymentAttempts" ToRole="PaymentRequests" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_PaymentAttempts" FromRole="PaymentAttempts" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="PaymentRequest">
+          <Key>
+            <PropertyRef Name="PaymentRequestId" />
+          </Key>
+          <Property Name="PaymentRequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Reference" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdempotencyKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Narration" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SelectedPaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiresAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_PaymentRequests_Customers" FromRole="PaymentRequests" ToRole="Customers" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_PaymentRequests_Merchants" FromRole="PaymentRequests" ToRole="Merchants" />
+          <NavigationProperty Name="PaymentAttempts" Relationship="Self.FK_PaymentAttempts_PaymentRequests" FromRole="PaymentRequests" ToRole="PaymentAttempts" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_PaymentRequests" FromRole="PaymentRequests" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Payout">
+          <Key>
+            <PropertyRef Name="PayoutId" />
+          </Key>
+          <Property Name="PayoutId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="BankAccountId" Type="Int32" Nullable="false" />
+          <Property Name="Reference" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ScheduledFor" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaidAt" Type="DateTime" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="MerchantBankAccount" Relationship="Self.FK_Payouts_BankAccounts" FromRole="Payouts" ToRole="MerchantBankAccounts" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_Payouts_Merchants" FromRole="Payouts" ToRole="Merchants" />
+          <NavigationProperty Name="PayoutTransactions" Relationship="Self.FK_PayoutTransactions_Payouts" FromRole="Payouts" ToRole="PayoutTransactions" />
+        </EntityType>
+        <EntityType Name="PayoutTransaction">
+          <Key>
+            <PropertyRef Name="PayoutTransactionId" />
+          </Key>
+          <Property Name="PayoutTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayoutId" Type="Int32" Nullable="false" />
+          <Property Name="TransactionId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Payout" Relationship="Self.FK_PayoutTransactions_Payouts" FromRole="PayoutTransactions" ToRole="Payouts" />
+          <NavigationProperty Name="Transaction" Relationship="Self.FK_PayoutTransactions_Transactions" FromRole="PayoutTransactions" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Refund">
+          <Key>
+            <PropertyRef Name="RefundId" />
+          </Key>
+          <Property Name="RefundId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RequestedByMerchantUserId" Type="Int32" />
+          <Property Name="ApprovedByInternalUserId" Type="Int32" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ProcessedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="InternalUser" Relationship="Self.FK_Refunds_ApprovedBy" FromRole="Refunds" ToRole="InternalUsers" />
+          <NavigationProperty Name="MerchantUser" Relationship="Self.FK_Refunds_RequestedBy" FromRole="Refunds" ToRole="MerchantUsers" />
+          <NavigationProperty Name="Transaction" Relationship="Self.FK_Refunds_Transactions" FromRole="Refunds" ToRole="Transactions" />
+          <NavigationProperty Name="WalletLedgerEntries" Relationship="Self.FK_WalletLedger_Refunds" FromRole="Refunds" ToRole="WalletLedgerEntries" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="InternalUsers" Relationship="Self.FK_InternalUsers_Roles" FromRole="Roles" ToRole="InternalUsers" />
+        </EntityType>
+        <EntityType Name="SupportTicket">
+          <Key>
+            <PropertyRef Name="TicketId" />
+          </Key>
+          <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="TransactionId" Type="Int64" />
+          <Property Name="AssignedInternalUserId" Type="Int32" />
+          <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResolvedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_SupportTickets_Customers" FromRole="SupportTickets" ToRole="Customers" />
+          <NavigationProperty Name="InternalUser" Relationship="Self.FK_SupportTickets_AssignedTo" FromRole="SupportTickets" ToRole="InternalUsers" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_SupportTickets_Merchants" FromRole="SupportTickets" ToRole="Merchants" />
+          <NavigationProperty Name="Transaction" Relationship="Self.FK_SupportTickets_Transactions" FromRole="SupportTickets" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="PaymentRequestId" Type="Int32" Nullable="false" />
+          <Property Name="PaymentAttemptId" Type="Int64" Nullable="false" />
+          <Property Name="Reference" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Environment" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OccurredAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Transactions_Customers" FromRole="Transactions" ToRole="Customers" />
+          <NavigationProperty Name="FraudFlags" Relationship="Self.FK_FraudFlags_Transactions" FromRole="Transactions" ToRole="FraudFlags" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_Transactions_Merchants" FromRole="Transactions" ToRole="Merchants" />
+          <NavigationProperty Name="PaymentAttempt" Relationship="Self.FK_Transactions_PaymentAttempts" FromRole="Transactions" ToRole="PaymentAttempts" />
+          <NavigationProperty Name="PaymentRequest" Relationship="Self.FK_Transactions_PaymentRequests" FromRole="Transactions" ToRole="PaymentRequests" />
+          <NavigationProperty Name="PayoutTransactions" Relationship="Self.FK_PayoutTransactions_Transactions" FromRole="Transactions" ToRole="PayoutTransactions" />
+          <NavigationProperty Name="Refunds" Relationship="Self.FK_Refunds_Transactions" FromRole="Transactions" ToRole="Refunds" />
+          <NavigationProperty Name="SupportTickets" Relationship="Self.FK_SupportTickets_Transactions" FromRole="Transactions" ToRole="SupportTickets" />
+          <NavigationProperty Name="WalletLedgerEntries" Relationship="Self.FK_WalletLedger_Transactions" FromRole="Transactions" ToRole="WalletLedgerEntries" />
+        </EntityType>
+        <EntityType Name="WalletLedgerEntry">
+          <Key>
+            <PropertyRef Name="LedgerEntryId" />
+          </Key>
+          <Property Name="LedgerEntryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WalletId" Type="Int32" Nullable="false" />
+          <Property Name="TransactionId" Type="Int64" />
+          <Property Name="PayoutId" Type="Int32" />
+          <Property Name="RefundId" Type="Int32" />
+          <Property Name="EntryType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BalanceAfter" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Refund" Relationship="Self.FK_WalletLedger_Refunds" FromRole="WalletLedgerEntries" ToRole="Refunds" />
+          <NavigationProperty Name="Transaction" Relationship="Self.FK_WalletLedger_Transactions" FromRole="WalletLedgerEntries" ToRole="Transactions" />
+          <NavigationProperty Name="Wallet" Relationship="Self.FK_WalletLedger_Wallets" FromRole="WalletLedgerEntries" ToRole="Wallets" />
+        </EntityType>
+        <EntityType Name="Wallet">
+          <Key>
+            <PropertyRef Name="WalletId" />
+          </Key>
+          <Property Name="WalletId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="Environment" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="AvailableBalance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PendingBalance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UpdatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_Wallets_Merchants" FromRole="Wallets" ToRole="Merchants" />
+          <NavigationProperty Name="WalletLedgerEntries" Relationship="Self.FK_WalletLedger_Wallets" FromRole="Wallets" ToRole="WalletLedgerEntries" />
+        </EntityType>
+        <EntityType Name="WebhookDeliveryLog">
+          <Key>
+            <PropertyRef Name="DeliveryId" />
+          </Key>
+          <Property Name="DeliveryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WebhookId" Type="Int32" Nullable="false" />
+          <Property Name="EventType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PayloadJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ResponseStatusCode" Type="Int32" />
+          <Property Name="AttemptNumber" Type="Byte" Nullable="false" />
+          <Property Name="Success" Type="Boolean" Nullable="false" />
+          <Property Name="DeliveredAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="WebhookEndpoint" Relationship="Self.FK_WebhookDeliveryLogs_Webhook" FromRole="WebhookDeliveryLogs" ToRole="WebhookEndpoints" />
+        </EntityType>
+        <EntityType Name="WebhookEndpoint">
+          <Key>
+            <PropertyRef Name="WebhookId" />
+          </Key>
+          <Property Name="WebhookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MerchantId" Type="Int32" Nullable="false" />
+          <Property Name="Environment" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SigningSecretHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Merchant" Relationship="Self.FK_WebhookEndpoints_Merchants" FromRole="WebhookEndpoints" ToRole="Merchants" />
+          <NavigationProperty Name="WebhookDeliveryLogs" Relationship="Self.FK_WebhookDeliveryLogs_Webhook" FromRole="WebhookEndpoints" ToRole="WebhookDeliveryLogs" />
+          <NavigationProperty Name="WebhookSubscriptions" Relationship="Self.FK_WebhookSubscriptions_Webhook" FromRole="WebhookEndpoints" ToRole="WebhookSubscriptions" />
+        </EntityType>
+        <EntityType Name="WebhookSubscription">
+          <Key>
+            <PropertyRef Name="SubscriptionId" />
+          </Key>
+          <Property Name="SubscriptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WebhookId" Type="Int32" Nullable="false" />
+          <Property Name="EventType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WebhookEndpoint" Relationship="Self.FK_WebhookSubscriptions_Webhook" FromRole="WebhookSubscriptions" ToRole="WebhookEndpoints" />
+        </EntityType>
+        <Association Name="FK_ApiCredentials_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="ApiCredentials" Type="Self.ApiCredential" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="ApiCredentials">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuditLogs_InternalUsers">
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="InternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AuditLogs_MerchantUsers">
+          <End Role="MerchantUsers" Type="Self.MerchantUser" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantUsers">
+              <PropertyRef Name="MerchantUserId" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="MerchantUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComplianceDocuments_Verification">
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerification" Multiplicity="1" />
+          <End Role="ComplianceDocuments" Type="Self.ComplianceDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComplianceVerifications">
+              <PropertyRef Name="VerificationId" />
+            </Principal>
+            <Dependent Role="ComplianceDocuments">
+              <PropertyRef Name="VerificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compliance_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="ComplianceVerifications">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Compliance_ReviewedBy">
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="0..1" />
+          <End Role="ComplianceVerifications" Type="Self.ComplianceVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="ComplianceVerifications">
+              <PropertyRef Name="ReviewedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customers_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentRequests_Customers">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="PaymentRequests" Type="Self.PaymentRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="PaymentRequests">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Customers">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Customers">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FraudFlags_ReviewedBy">
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="0..1" />
+          <End Role="FraudFlags" Type="Self.FraudFlag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="FraudFlags">
+              <PropertyRef Name="ReviewedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FraudFlags_Transactions">
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="1" />
+          <End Role="FraudFlags" Type="Self.FraudFlag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="FraudFlags">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InternalUsers_Roles">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="InternalUsers">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_ApprovedBy">
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="ApprovedByInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_AssignedTo">
+          <End Role="InternalUsers" Type="Self.InternalUser" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InternalUsers">
+              <PropertyRef Name="InternalUserId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="AssignedInternalUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BankAccounts_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="MerchantBankAccounts" Type="Self.MerchantBankAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="MerchantBankAccounts">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payouts_BankAccounts">
+          <End Role="MerchantBankAccounts" Type="Self.MerchantBankAccount" Multiplicity="1" />
+          <End Role="Payouts" Type="Self.Payout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantBankAccounts">
+              <PropertyRef Name="BankAccountId" />
+            </Principal>
+            <Dependent Role="Payouts">
+              <PropertyRef Name="BankAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MerchantUsers_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="MerchantUsers" Type="Self.MerchantUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="MerchantUsers">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentRequests_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="PaymentRequests" Type="Self.PaymentRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="PaymentRequests">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payouts_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="Payouts" Type="Self.Payout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Payouts">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wallets_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="Wallets" Type="Self.Wallet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="Wallets">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookEndpoints_Merchants">
+          <End Role="Merchants" Type="Self.Merchant" Multiplicity="1" />
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Merchants">
+              <PropertyRef Name="MerchantId" />
+            </Principal>
+            <Dependent Role="WebhookEndpoints">
+              <PropertyRef Name="MerchantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_RequestedBy">
+          <End Role="MerchantUsers" Type="Self.MerchantUser" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MerchantUsers">
+              <PropertyRef Name="MerchantUserId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="RequestedByMerchantUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentAttempts_PaymentRequests">
+          <End Role="PaymentRequests" Type="Self.PaymentRequest" Multiplicity="1" />
+          <End Role="PaymentAttempts" Type="Self.PaymentAttempt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentRequests">
+              <PropertyRef Name="PaymentRequestId" />
+            </Principal>
+            <Dependent Role="PaymentAttempts">
+              <PropertyRef Name="PaymentRequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_PaymentAttempts">
+          <End Role="PaymentAttempts" Type="Self.PaymentAttempt" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAttempts">
+              <PropertyRef Name="PaymentAttemptId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="PaymentAttemptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_PaymentRequests">
+          <End Role="PaymentRequests" Type="Self.PaymentRequest" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentRequests">
+              <PropertyRef Name="PaymentRequestId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="PaymentRequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PayoutTransactions_Payouts">
+          <End Role="Payouts" Type="Self.Payout" Multiplicity="1" />
+          <End Role="PayoutTransactions" Type="Self.PayoutTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payouts">
+              <PropertyRef Name="PayoutId" />
+            </Principal>
+            <Dependent Role="PayoutTransactions">
+              <PropertyRef Name="PayoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PayoutTransactions_Transactions">
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="1" />
+          <End Role="PayoutTransactions" Type="Self.PayoutTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="PayoutTransactions">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refunds_Transactions">
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="1" />
+          <End Role="Refunds" Type="Self.Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Refunds">
+          <End Role="Refunds" Type="Self.Refund" Multiplicity="0..1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refunds">
+              <PropertyRef Name="RefundId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="RefundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupportTickets_Transactions">
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="0..1" />
+          <End Role="SupportTickets" Type="Self.SupportTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="SupportTickets">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Transactions">
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="0..1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WalletLedger_Wallets">
+          <End Role="Wallets" Type="Self.Wallet" Multiplicity="1" />
+          <End Role="WalletLedgerEntries" Type="Self.WalletLedgerEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Wallets">
+              <PropertyRef Name="WalletId" />
+            </Principal>
+            <Dependent Role="WalletLedgerEntries">
+              <PropertyRef Name="WalletId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookDeliveryLogs_Webhook">
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoint" Multiplicity="1" />
+          <End Role="WebhookDeliveryLogs" Type="Self.WebhookDeliveryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebhookEndpoints">
+              <PropertyRef Name="WebhookId" />
+            </Principal>
+            <Dependent Role="WebhookDeliveryLogs">
+              <PropertyRef Name="WebhookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebhookSubscriptions_Webhook">
+          <End Role="WebhookEndpoints" Type="Self.WebhookEndpoint" Multiplicity="1" />
+          <End Role="WebhookSubscriptions" Type="Self.WebhookSubscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebhookEndpoints">
+              <PropertyRef Name="WebhookId" />
+            </Principal>
+            <Dependent Role="WebhookSubscriptions">
+              <PropertyRef Name="WebhookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="paymentgatewaydbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ApiCredentials" EntityType="Self.ApiCredential" />
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLog" />
+          <EntitySet Name="ComplianceDocuments" EntityType="Self.ComplianceDocument" />
+          <EntitySet Name="ComplianceVerifications" EntityType="Self.ComplianceVerification" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="FraudFlags" EntityType="Self.FraudFlag" />
+          <EntitySet Name="InternalUsers" EntityType="Self.InternalUser" />
+          <EntitySet Name="MerchantBankAccounts" EntityType="Self.MerchantBankAccount" />
+          <EntitySet Name="Merchants" EntityType="Self.Merchant" />
+          <EntitySet Name="MerchantUsers" EntityType="Self.MerchantUser" />
+          <EntitySet Name="PaymentAttempts" EntityType="Self.PaymentAttempt" />
+          <EntitySet Name="PaymentRequests" EntityType="Self.PaymentRequest" />
+          <EntitySet Name="Payouts" EntityType="Self.Payout" />
+          <EntitySet Name="PayoutTransactions" EntityType="Self.PayoutTransaction" />
+          <EntitySet Name="Refunds" EntityType="Self.Refund" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <EntitySet Name="WalletLedgerEntries" EntityType="Self.WalletLedgerEntry" />
+          <EntitySet Name="Wallets" EntityType="Self.Wallet" />
+          <EntitySet Name="WebhookDeliveryLogs" EntityType="Self.WebhookDeliveryLog" />
+          <EntitySet Name="WebhookEndpoints" EntityType="Self.WebhookEndpoint" />
+          <EntitySet Name="WebhookSubscriptions" EntityType="Self.WebhookSubscription" />
+          <AssociationSet Name="FK_ApiCredentials_Merchants" Association="Self.FK_ApiCredentials_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="ApiCredentials" EntitySet="ApiCredentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuditLogs_InternalUsers" Association="Self.FK_AuditLogs_InternalUsers">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AuditLogs_MerchantUsers" Association="Self.FK_AuditLogs_MerchantUsers">
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComplianceDocuments_Verification" Association="Self.FK_ComplianceDocuments_Verification">
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+            <End Role="ComplianceDocuments" EntitySet="ComplianceDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compliance_Merchants" Association="Self.FK_Compliance_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Compliance_ReviewedBy" Association="Self.FK_Compliance_ReviewedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="ComplianceVerifications" EntitySet="ComplianceVerifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_Merchants" Association="Self.FK_Customers_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentRequests_Customers" Association="Self.FK_PaymentRequests_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Customers" Association="Self.FK_SupportTickets_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Customers" Association="Self.FK_Transactions_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FraudFlags_ReviewedBy" Association="Self.FK_FraudFlags_ReviewedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="FraudFlags" EntitySet="FraudFlags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FraudFlags_Transactions" Association="Self.FK_FraudFlags_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="FraudFlags" EntitySet="FraudFlags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InternalUsers_Roles" Association="Self.FK_InternalUsers_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_ApprovedBy" Association="Self.FK_Refunds_ApprovedBy">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_AssignedTo" Association="Self.FK_SupportTickets_AssignedTo">
+            <End Role="InternalUsers" EntitySet="InternalUsers" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BankAccounts_Merchants" Association="Self.FK_BankAccounts_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="MerchantBankAccounts" EntitySet="MerchantBankAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payouts_BankAccounts" Association="Self.FK_Payouts_BankAccounts">
+            <End Role="MerchantBankAccounts" EntitySet="MerchantBankAccounts" />
+            <End Role="Payouts" EntitySet="Payouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MerchantUsers_Merchants" Association="Self.FK_MerchantUsers_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentRequests_Merchants" Association="Self.FK_PaymentRequests_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payouts_Merchants" Association="Self.FK_Payouts_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Payouts" EntitySet="Payouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Merchants" Association="Self.FK_SupportTickets_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Merchants" Association="Self.FK_Transactions_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wallets_Merchants" Association="Self.FK_Wallets_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="Wallets" EntitySet="Wallets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookEndpoints_Merchants" Association="Self.FK_WebhookEndpoints_Merchants">
+            <End Role="Merchants" EntitySet="Merchants" />
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_RequestedBy" Association="Self.FK_Refunds_RequestedBy">
+            <End Role="MerchantUsers" EntitySet="MerchantUsers" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentAttempts_PaymentRequests" Association="Self.FK_PaymentAttempts_PaymentRequests">
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+            <End Role="PaymentAttempts" EntitySet="PaymentAttempts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_PaymentAttempts" Association="Self.FK_Transactions_PaymentAttempts">
+            <End Role="PaymentAttempts" EntitySet="PaymentAttempts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_PaymentRequests" Association="Self.FK_Transactions_PaymentRequests">
+            <End Role="PaymentRequests" EntitySet="PaymentRequests" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PayoutTransactions_Payouts" Association="Self.FK_PayoutTransactions_Payouts">
+            <End Role="Payouts" EntitySet="Payouts" />
+            <End Role="PayoutTransactions" EntitySet="PayoutTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PayoutTransactions_Transactions" Association="Self.FK_PayoutTransactions_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="PayoutTransactions" EntitySet="PayoutTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refunds_Transactions" Association="Self.FK_Refunds_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Refunds" Association="Self.FK_WalletLedger_Refunds">
+            <End Role="Refunds" EntitySet="Refunds" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupportTickets_Transactions" Association="Self.FK_SupportTickets_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="SupportTickets" EntitySet="SupportTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Transactions" Association="Self.FK_WalletLedger_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WalletLedger_Wallets" Association="Self.FK_WalletLedger_Wallets">
+            <End Role="Wallets" EntitySet="Wallets" />
+            <End Role="WalletLedgerEntries" EntitySet="WalletLedgerEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookDeliveryLogs_Webhook" Association="Self.FK_WebhookDeliveryLogs_Webhook">
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+            <End Role="WebhookDeliveryLogs" EntitySet="WebhookDeliveryLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebhookSubscriptions_Webhook" Association="Self.FK_WebhookSubscriptions_Webhook">
+            <End Role="WebhookEndpoints" EntitySet="WebhookEndpoints" />
+            <End Role="WebhookSubscriptions" EntitySet="WebhookSubscriptions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="paymentgatewaydbModelStoreContainer" CdmEntityContainer="paymentgatewaydbEntities">
+          <EntitySetMapping Name="ApiCredentials">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.ApiCredential">
+              <MappingFragment StoreEntitySet="ApiCredentials">
+                <ScalarProperty Name="CredentialId" ColumnName="CredentialId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="Environment" ColumnName="Environment" />
+                <ScalarProperty Name="PublishableKey" ColumnName="PublishableKey" />
+                <ScalarProperty Name="SecretKeyHash" ColumnName="SecretKeyHash" />
+                <ScalarProperty Name="SecretKeyLastFour" ColumnName="SecretKeyLastFour" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="RotatedAt" ColumnName="RotatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.AuditLog">
+              <MappingFragment StoreEntitySet="AuditLogs">
+                <ScalarProperty Name="AuditLogId" ColumnName="AuditLogId" />
+                <ScalarProperty Name="InternalUserId" ColumnName="InternalUserId" />
+                <ScalarProperty Name="MerchantUserId" ColumnName="MerchantUserId" />
+                <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+                <ScalarProperty Name="EntityType" ColumnName="EntityType" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComplianceDocuments">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.ComplianceDocument">
+              <MappingFragment StoreEntitySet="ComplianceDocuments">
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="VerificationId" ColumnName="VerificationId" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="FileStoragePath" ColumnName="FileStoragePath" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RejectionNote" ColumnName="RejectionNote" />
+                <ScalarProperty Name="UploadedAt" ColumnName="UploadedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComplianceVerifications">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.ComplianceVerification">
+              <MappingFragment StoreEntitySet="ComplianceVerifications">
+                <ScalarProperty Name="VerificationId" ColumnName="VerificationId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="LegalStructure" ColumnName="LegalStructure" />
+                <ScalarProperty Name="IndustrySector" ColumnName="IndustrySector" />
+                <ScalarProperty Name="IsScumlRequired" ColumnName="IsScumlRequired" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ProgressPercent" ColumnName="ProgressPercent" />
+                <ScalarProperty Name="RejectionReason" ColumnName="RejectionReason" />
+                <ScalarProperty Name="SubmittedAt" ColumnName="SubmittedAt" />
+                <ScalarProperty Name="ReviewedAt" ColumnName="ReviewedAt" />
+                <ScalarProperty Name="ReviewedByInternalUserId" ColumnName="ReviewedByInternalUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="LastActivityAt" ColumnName="LastActivityAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FraudFlags">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.FraudFlag">
+              <MappingFragment StoreEntitySet="FraudFlags">
+                <ScalarProperty Name="FlagId" ColumnName="FlagId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="RiskScore" ColumnName="RiskScore" />
+                <ScalarProperty Name="FlagReason" ColumnName="FlagReason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ReviewedByInternalUserId" ColumnName="ReviewedByInternalUserId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ResolvedAt" ColumnName="ResolvedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternalUsers">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.InternalUser">
+              <MappingFragment StoreEntitySet="InternalUsers">
+                <ScalarProperty Name="InternalUserId" ColumnName="InternalUserId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MerchantBankAccounts">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.MerchantBankAccount">
+              <MappingFragment StoreEntitySet="MerchantBankAccounts">
+                <ScalarProperty Name="BankAccountId" ColumnName="BankAccountId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="SettlementCycle" ColumnName="SettlementCycle" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsPrimary" ColumnName="IsPrimary" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="VerifiedAt" ColumnName="VerifiedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Merchants">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Merchant">
+              <MappingFragment StoreEntitySet="Merchants">
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="LegalBusinessName" ColumnName="LegalBusinessName" />
+                <ScalarProperty Name="TradingName" ColumnName="TradingName" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="BusinessCategory" ColumnName="BusinessCategory" />
+                <ScalarProperty Name="RegisteredAddress" ColumnName="RegisteredAddress" />
+                <ScalarProperty Name="Mode" ColumnName="Mode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MerchantUsers">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.MerchantUser">
+              <MappingFragment StoreEntitySet="MerchantUsers">
+                <ScalarProperty Name="MerchantUserId" ColumnName="MerchantUserId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="RoleOnAccount" ColumnName="RoleOnAccount" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastLoginAt" ColumnName="LastLoginAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentAttempts">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.PaymentAttempt">
+              <MappingFragment StoreEntitySet="PaymentAttempts">
+                <ScalarProperty Name="PaymentAttemptId" ColumnName="PaymentAttemptId" />
+                <ScalarProperty Name="PaymentRequestId" ColumnName="PaymentRequestId" />
+                <ScalarProperty Name="AttemptNumber" ColumnName="AttemptNumber" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FailureReason" ColumnName="FailureReason" />
+                <ScalarProperty Name="ProviderReference" ColumnName="ProviderReference" />
+                <ScalarProperty Name="CardBrand" ColumnName="CardBrand" />
+                <ScalarProperty Name="CardLast4" ColumnName="CardLast4" />
+                <ScalarProperty Name="CardExpiryMonth" ColumnName="CardExpiryMonth" />
+                <ScalarProperty Name="CardExpiryYear" ColumnName="CardExpiryYear" />
+                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
+                <ScalarProperty Name="UssdDialString" ColumnName="UssdDialString" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CompletedAt" ColumnName="CompletedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentRequests">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.PaymentRequest">
+              <MappingFragment StoreEntitySet="PaymentRequests">
+                <ScalarProperty Name="PaymentRequestId" ColumnName="PaymentRequestId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="IdempotencyKey" ColumnName="IdempotencyKey" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SelectedPaymentMethod" ColumnName="SelectedPaymentMethod" />
+                <ScalarProperty Name="ExpiresAt" ColumnName="ExpiresAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payouts">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Payout">
+              <MappingFragment StoreEntitySet="Payouts">
+                <ScalarProperty Name="PayoutId" ColumnName="PayoutId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="BankAccountId" ColumnName="BankAccountId" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ScheduledFor" ColumnName="ScheduledFor" />
+                <ScalarProperty Name="PaidAt" ColumnName="PaidAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayoutTransactions">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.PayoutTransaction">
+              <MappingFragment StoreEntitySet="PayoutTransactions">
+                <ScalarProperty Name="PayoutTransactionId" ColumnName="PayoutTransactionId" />
+                <ScalarProperty Name="PayoutId" ColumnName="PayoutId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refunds">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Refund">
+              <MappingFragment StoreEntitySet="Refunds">
+                <ScalarProperty Name="RefundId" ColumnName="RefundId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RequestedByMerchantUserId" ColumnName="RequestedByMerchantUserId" />
+                <ScalarProperty Name="ApprovedByInternalUserId" ColumnName="ApprovedByInternalUserId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ProcessedAt" ColumnName="ProcessedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupportTickets">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.SupportTicket">
+              <MappingFragment StoreEntitySet="SupportTickets">
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="AssignedInternalUserId" ColumnName="AssignedInternalUserId" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ResolvedAt" ColumnName="ResolvedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PaymentRequestId" ColumnName="PaymentRequestId" />
+                <ScalarProperty Name="PaymentAttemptId" ColumnName="PaymentAttemptId" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Environment" ColumnName="Environment" />
+                <ScalarProperty Name="OccurredAt" ColumnName="OccurredAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WalletLedgerEntries">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.WalletLedgerEntry">
+              <MappingFragment StoreEntitySet="WalletLedgerEntries">
+                <ScalarProperty Name="LedgerEntryId" ColumnName="LedgerEntryId" />
+                <ScalarProperty Name="WalletId" ColumnName="WalletId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="PayoutId" ColumnName="PayoutId" />
+                <ScalarProperty Name="RefundId" ColumnName="RefundId" />
+                <ScalarProperty Name="EntryType" ColumnName="EntryType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BalanceAfter" ColumnName="BalanceAfter" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Wallets">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.Wallet">
+              <MappingFragment StoreEntitySet="Wallets">
+                <ScalarProperty Name="WalletId" ColumnName="WalletId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="Environment" ColumnName="Environment" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="AvailableBalance" ColumnName="AvailableBalance" />
+                <ScalarProperty Name="PendingBalance" ColumnName="PendingBalance" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebhookDeliveryLogs">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.WebhookDeliveryLog">
+              <MappingFragment StoreEntitySet="WebhookDeliveryLogs">
+                <ScalarProperty Name="DeliveryId" ColumnName="DeliveryId" />
+                <ScalarProperty Name="WebhookId" ColumnName="WebhookId" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="PayloadJson" ColumnName="PayloadJson" />
+                <ScalarProperty Name="ResponseStatusCode" ColumnName="ResponseStatusCode" />
+                <ScalarProperty Name="AttemptNumber" ColumnName="AttemptNumber" />
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="DeliveredAt" ColumnName="DeliveredAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebhookEndpoints">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.WebhookEndpoint">
+              <MappingFragment StoreEntitySet="WebhookEndpoints">
+                <ScalarProperty Name="WebhookId" ColumnName="WebhookId" />
+                <ScalarProperty Name="MerchantId" ColumnName="MerchantId" />
+                <ScalarProperty Name="Environment" ColumnName="Environment" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="SigningSecretHash" ColumnName="SigningSecretHash" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebhookSubscriptions">
+            <EntityTypeMapping TypeName="paymentgatewaydbModel.WebhookSubscription">
+              <MappingFragment StoreEntitySet="WebhookSubscriptions">
+                <ScalarProperty Name="SubscriptionId" ColumnName="SubscriptionId" />
+                <ScalarProperty Name="WebhookId" ColumnName="WebhookId" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

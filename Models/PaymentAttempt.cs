@@ -12,29 +12,31 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class PaymentAttempt
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Customer()
+        public PaymentAttempt()
         {
-            this.PaymentRequests = new HashSet<PaymentRequest>();
-            this.SupportTickets = new HashSet<SupportTicket>();
             this.Transactions = new HashSet<Transaction>();
         }
     
-        public int CustomerId { get; set; }
-        public int MerchantId { get; set; }
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        public long PaymentAttemptId { get; set; }
+        public int PaymentRequestId { get; set; }
+        public byte AttemptNumber { get; set; }
+        public string PaymentMethod { get; set; }
+        public string Status { get; set; }
+        public string FailureReason { get; set; }
+        public string ProviderReference { get; set; }
+        public string CardBrand { get; set; }
+        public string CardLast4 { get; set; }
+        public Nullable<byte> CardExpiryMonth { get; set; }
+        public Nullable<short> CardExpiryYear { get; set; }
+        public string BankCode { get; set; }
+        public string UssdDialString { get; set; }
         public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> LastActivityAt { get; set; }
+        public Nullable<System.DateTime> CompletedAt { get; set; }
     
-        public virtual Merchant Merchant { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PaymentRequest> PaymentRequests { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SupportTicket> SupportTickets { get; set; }
+        public virtual PaymentRequest PaymentRequest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
     }

@@ -13,50 +13,55 @@ using WebApiPaymentGateway.Models;
 namespace WebApiPaymentGateway.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Produces("application/json")]
-    [Route("~/api/Merchants")]
-    public class MerchantsController : ApiController
+    [Route("~/api/AuditLogs")]
+
+
+    public class AuditLogsController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Merchants
-        [Route("~/api/GetAllMerchants")]
-        public IQueryable<Merchant> GetMerchants()
+        // GET: api/AuditLogs
+          [Route("~/api/GetAllAuditLogs")]
+          [HttpGet]
+
+        public IQueryable<AuditLog> GetAuditLogs()
         {
-            return db.Merchants;
+            return db.AuditLogs;
         }
 
-        // GET: api/Merchants/5
-        [Route("~/api/GetMerchantById/{id}")]
-        [ResponseType(typeof(Merchant))]
+        // GET: api/AuditLogs/5
+        [Route("~/api/GetAuditLogById/{id}")]
         [HttpGet]
-        public IHttpActionResult GetMerchant(int id)
+
+        [ResponseType(typeof(AuditLog))]
+        public IHttpActionResult GetAuditLog(long id)
         {
-            Merchant merchant = db.Merchants.Find(id);
-            if (merchant == null)
+            AuditLog auditLog = db.AuditLogs.Find(id);
+            if (auditLog == null)
             {
                 return NotFound();
             }
 
-            return Ok(merchant);
+            return Ok(auditLog);
         }
 
-        // PUT: api/Merchants/5
-        [Route("~/api/UpdateMerchant/{id}")]
-        [ResponseType(typeof(void))]
+        // PUT: api/AuditLogs/5
+        [Route("~/api/UpdateAuditLog/{id}")]
         [HttpPut]
-        public IHttpActionResult PutMerchant(int id, Merchant merchant)
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutAuditLog(long id, AuditLog auditLog)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != merchant.MerchantId)
+            if (id != auditLog.AuditLogId)
             {
                 return BadRequest();
             }
 
-            db.Entry(merchant).State = EntityState.Modified;
+            db.Entry(auditLog).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +69,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MerchantExists(id))
+                if (!AuditLogExists(id))
                 {
                     return NotFound();
                 }
@@ -77,40 +82,40 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Merchants
-        [Route("~/api/CreateMerchant")]
-        [ResponseType(typeof(Merchant))]
+        // POST: api/AuditLogs
+        [Route("~/api/CreateAuditLog")]
         [HttpPost]
-        public IHttpActionResult PostMerchant(Merchant merchant)
+
+        [ResponseType(typeof(AuditLog))]
+        public IHttpActionResult PostAuditLog(AuditLog auditLog)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Merchants.Add(merchant);
+            db.AuditLogs.Add(auditLog);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = merchant.MerchantId }, merchant);
+            return CreatedAtRoute("DefaultApi", new { id = auditLog.AuditLogId }, auditLog);
         }
 
-        // DELETE: api/Merchants/5
-
-        [Route("~/api/DeleteMerchant/{id}")]
-        [ResponseType(typeof(Merchant))]
+        // DELETE: api/AuditLogs/5
+        [Route("~/api/DeleteAuditLog/{id}")]
         [HttpDelete]
-        public IHttpActionResult DeleteMerchant(int id)
+        [ResponseType(typeof(AuditLog))]
+        public IHttpActionResult DeleteAuditLog(long id)
         {
-            Merchant merchant = db.Merchants.Find(id);
-            if (merchant == null)
+            AuditLog auditLog = db.AuditLogs.Find(id);
+            if (auditLog == null)
             {
                 return NotFound();
             }
 
-            db.Merchants.Remove(merchant);
+            db.AuditLogs.Remove(auditLog);
             db.SaveChanges();
 
-            return Ok(merchant);
+            return Ok(auditLog);
         }
 
         protected override void Dispose(bool disposing)
@@ -122,9 +127,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MerchantExists(int id)
+        private bool AuditLogExists(long id)
         {
-            return db.Merchants.Count(e => e.MerchantId == id) > 0;
+            return db.AuditLogs.Count(e => e.AuditLogId == id) > 0;
         }
     }
 }

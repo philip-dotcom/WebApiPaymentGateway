@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class MerchantUsersController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/MerchantUsers
+        public IQueryable<MerchantUser> GetMerchantUsers()
         {
-            return db.Customers;
+            return db.MerchantUsers;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/MerchantUsers/5
+        [ResponseType(typeof(MerchantUser))]
+        public IHttpActionResult GetMerchantUser(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            MerchantUser merchantUser = db.MerchantUsers.Find(id);
+            if (merchantUser == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(merchantUser);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/MerchantUsers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutMerchantUser(int id, MerchantUser merchantUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != merchantUser.MerchantUserId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(merchantUser).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!MerchantUserExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/MerchantUsers
+        [ResponseType(typeof(MerchantUser))]
+        public IHttpActionResult PostMerchantUser(MerchantUser merchantUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.MerchantUsers.Add(merchantUser);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = merchantUser.MerchantUserId }, merchantUser);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/MerchantUsers/5
+        [ResponseType(typeof(MerchantUser))]
+        public IHttpActionResult DeleteMerchantUser(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            MerchantUser merchantUser = db.MerchantUsers.Find(id);
+            if (merchantUser == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.MerchantUsers.Remove(merchantUser);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(merchantUser);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool MerchantUserExists(int id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.MerchantUsers.Count(e => e.MerchantUserId == id) > 0;
         }
     }
 }

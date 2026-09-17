@@ -12,21 +12,29 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TransactionStatu
+    public partial class MerchantUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TransactionStatu()
+        public MerchantUser()
         {
-            this.Transactions = new HashSet<Transaction>();
-            this.TransactionStatusHistories = new HashSet<TransactionStatusHistory>();
+            this.AuditLogs = new HashSet<AuditLog>();
+            this.Refunds = new HashSet<Refund>();
         }
     
-        public string StatusCode { get; set; }
-        public string Description { get; set; }
+        public int MerchantUserId { get; set; }
+        public int MerchantId { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public string RoleOnAccount { get; set; }
+        public bool IsActive { get; set; }
+        public Nullable<System.DateTime> LastLoginAt { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<AuditLog> AuditLogs { get; set; }
+        public virtual Merchant Merchant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TransactionStatusHistory> TransactionStatusHistories { get; set; }
+        public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

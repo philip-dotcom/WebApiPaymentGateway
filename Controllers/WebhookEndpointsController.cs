@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class WebhookEndpointsController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/WebhookEndpoints
+        public IQueryable<WebhookEndpoint> GetWebhookEndpoints()
         {
-            return db.Customers;
+            return db.WebhookEndpoints;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/WebhookEndpoints/5
+        [ResponseType(typeof(WebhookEndpoint))]
+        public IHttpActionResult GetWebhookEndpoint(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            WebhookEndpoint webhookEndpoint = db.WebhookEndpoints.Find(id);
+            if (webhookEndpoint == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(webhookEndpoint);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/WebhookEndpoints/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutWebhookEndpoint(int id, WebhookEndpoint webhookEndpoint)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != webhookEndpoint.WebhookId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(webhookEndpoint).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!WebhookEndpointExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/WebhookEndpoints
+        [ResponseType(typeof(WebhookEndpoint))]
+        public IHttpActionResult PostWebhookEndpoint(WebhookEndpoint webhookEndpoint)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.WebhookEndpoints.Add(webhookEndpoint);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = webhookEndpoint.WebhookId }, webhookEndpoint);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/WebhookEndpoints/5
+        [ResponseType(typeof(WebhookEndpoint))]
+        public IHttpActionResult DeleteWebhookEndpoint(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            WebhookEndpoint webhookEndpoint = db.WebhookEndpoints.Find(id);
+            if (webhookEndpoint == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.WebhookEndpoints.Remove(webhookEndpoint);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(webhookEndpoint);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool WebhookEndpointExists(int id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.WebhookEndpoints.Count(e => e.WebhookId == id) > 0;
         }
     }
 }

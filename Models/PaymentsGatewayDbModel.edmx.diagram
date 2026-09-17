@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="237b86077b114c1b92d1ac80819dc385" Name="Diagram1">
+        <EntityTypeShape EntityType="paymentgatewaydbModel.ApiCredential" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.AuditLog" Width="1.5" PointX="5.25" PointY="30.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.ComplianceDocument" Width="1.5" PointX="8.25" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.ComplianceVerification" Width="1.5" PointX="6" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Customer" Width="1.5" PointX="3" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.FraudFlag" Width="1.5" PointX="15" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.InternalUser" Width="1.5" PointX="15.75" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.MerchantBankAccount" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Merchant" Width="1.5" PointX="0.75" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.MerchantUser" Width="1.5" PointX="3" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.PaymentAttempt" Width="1.5" PointX="10.5" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.PaymentRequest" Width="1.5" PointX="8.25" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Payout" Width="1.5" PointX="5.25" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.PayoutTransaction" Width="1.5" PointX="15" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Refund" Width="1.5" PointX="18" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Role" Width="1.5" PointX="13.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.SupportTicket" Width="1.5" PointX="18" PointY="18.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Transaction" Width="1.5" PointX="12.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.WalletLedgerEntry" Width="1.5" PointX="20.25" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.Wallet" Width="1.5" PointX="3" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.WebhookDeliveryLog" Width="1.5" PointX="5.25" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.WebhookEndpoint" Width="1.5" PointX="3" PointY="35.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="paymentgatewaydbModel.WebhookSubscription" Width="1.5" PointX="5.25" PointY="38.125" IsExpanded="true" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_ApiCredentials_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_AuditLogs_InternalUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_AuditLogs_MerchantUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_ComplianceDocuments_Verification" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Compliance_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Compliance_ReviewedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Customers_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_PaymentRequests_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_SupportTickets_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Transactions_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_FraudFlags_ReviewedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_FraudFlags_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_InternalUsers_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Refunds_ApprovedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_SupportTickets_AssignedTo" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_BankAccounts_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Payouts_BankAccounts" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_MerchantUsers_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_PaymentRequests_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Payouts_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_SupportTickets_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Transactions_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Wallets_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WebhookEndpoints_Merchants" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Refunds_RequestedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_PaymentAttempts_PaymentRequests" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Transactions_PaymentAttempts" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Transactions_PaymentRequests" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_PayoutTransactions_Payouts" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_PayoutTransactions_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_Refunds_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WalletLedger_Refunds" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_SupportTickets_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WalletLedger_Transactions" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WalletLedger_Wallets" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WebhookDeliveryLogs_Webhook" ManuallyRouted="false" />
+        <AssociationConnector Association="paymentgatewaydbModel.FK_WebhookSubscriptions_Webhook" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

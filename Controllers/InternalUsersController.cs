@@ -12,44 +12,44 @@ using WebApiPaymentGateway.Models;
 
 namespace WebApiPaymentGateway.Controllers
 {
-    public class CustomersController : ApiController
+    public class InternalUsersController : ApiController
     {
         private paymentgatewaydbEntities db = new paymentgatewaydbEntities();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        // GET: api/InternalUsers
+        public IQueryable<InternalUser> GetInternalUsers()
         {
-            return db.Customers;
+            return db.InternalUsers;
         }
 
-        // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        // GET: api/InternalUsers/5
+        [ResponseType(typeof(InternalUser))]
+        public IHttpActionResult GetInternalUser(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            InternalUser internalUser = db.InternalUsers.Find(id);
+            if (internalUser == null)
             {
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(internalUser);
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/InternalUsers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCustomer(int id, Customer customer)
+        public IHttpActionResult PutInternalUser(int id, InternalUser internalUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.CustomerId)
+            if (id != internalUser.InternalUserId)
             {
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            db.Entry(internalUser).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApiPaymentGateway.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!InternalUserExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace WebApiPaymentGateway.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult PostCustomer(Customer customer)
+        // POST: api/InternalUsers
+        [ResponseType(typeof(InternalUser))]
+        public IHttpActionResult PostInternalUser(InternalUser internalUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
+            db.InternalUsers.Add(internalUser);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = internalUser.InternalUserId }, internalUser);
         }
 
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult DeleteCustomer(int id)
+        // DELETE: api/InternalUsers/5
+        [ResponseType(typeof(InternalUser))]
+        public IHttpActionResult DeleteInternalUser(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            if (customer == null)
+            InternalUser internalUser = db.InternalUsers.Find(id);
+            if (internalUser == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
+            db.InternalUsers.Remove(internalUser);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(internalUser);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace WebApiPaymentGateway.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+        private bool InternalUserExists(int id)
         {
-            return db.Customers.Count(e => e.CustomerId == id) > 0;
+            return db.InternalUsers.Count(e => e.InternalUserId == id) > 0;
         }
     }
 }

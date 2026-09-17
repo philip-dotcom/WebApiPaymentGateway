@@ -12,18 +12,28 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RefundStatu
+    public partial class MerchantBankAccount
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RefundStatu()
+        public MerchantBankAccount()
         {
-            this.Refunds = new HashSet<Refund>();
+            this.Payouts = new HashSet<Payout>();
         }
     
-        public string StatusCode { get; set; }
-        public string Description { get; set; }
+        public int BankAccountId { get; set; }
+        public int MerchantId { get; set; }
+        public string BankCode { get; set; }
+        public string BankName { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
+        public string SettlementCycle { get; set; }
+        public string Status { get; set; }
+        public bool IsPrimary { get; set; }
+        public System.DateTime CreatedAt { get; set; }
+        public Nullable<System.DateTime> VerifiedAt { get; set; }
     
+        public virtual Merchant Merchant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Refund> Refunds { get; set; }
+        public virtual ICollection<Payout> Payouts { get; set; }
     }
 }

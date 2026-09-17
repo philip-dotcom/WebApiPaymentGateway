@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -258,65 +259,119 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ApiCredentialsController.cs" />
+    <Compile Include="Controllers\AuditLogsController.cs" />
+    <Compile Include="Controllers\ComplianceDocumentsController.cs" />
+    <Compile Include="Controllers\ComplianceVerificationsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\FraudFlagsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InternalUsersController.cs" />
+    <Compile Include="Controllers\MerchantBankAccountsController.cs" />
     <Compile Include="Controllers\MerchantsController.cs" />
+    <Compile Include="Controllers\MerchantUsersController.cs" />
+    <Compile Include="Controllers\PaymentAttemptsController.cs" />
+    <Compile Include="Controllers\PaymentRequestsController.cs" />
+    <Compile Include="Controllers\PayoutsController.cs" />
+    <Compile Include="Controllers\PayoutTransactionsController.cs" />
+    <Compile Include="Controllers\RefundsController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SupportTicketsController.cs" />
+    <Compile Include="Controllers\TransactionsController.cs" />
+    <Compile Include="Controllers\WalletLedgerEntriesController.cs" />
+    <Compile Include="Controllers\WalletsController.cs" />
+    <Compile Include="Controllers\WebhookDeliveryLogsController.cs" />
+    <Compile Include="Controllers\WebhookEndpointsController.cs" />
+    <Compile Include="Controllers\WebhookSubscriptionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApiKey.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+    <Compile Include="Models\ApiCredential.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AuditLog.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComplianceDocument.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComplianceVerification.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FraudFlag.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InternalUser.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Merchant.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaymentGatewayModel.Context.cs">
+    <Compile Include="Models\MerchantBankAccount.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MerchantUser.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PaymentAttempt.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PaymentRequest.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PaymentsGatewayDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaymentGatewayModel.Context.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaymentGatewayModel.cs">
+    <Compile Include="Models\PaymentsGatewayDbModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaymentGatewayModel.Designer.cs">
+    <Compile Include="Models\PaymentsGatewayDbModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaymentGatewayModel.edmx</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaymentMethod.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+    <Compile Include="Models\Payout.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PayoutTransaction.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Refund.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RefundStatu.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SupportTicket.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TransactionStatu.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TransactionStatusHistory.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Wallet.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WalletLedger.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+    <Compile Include="Models\WalletLedgerEntry.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WebhookEvent.cs">
-      <DependentUpon>PaymentGatewayModel.tt</DependentUpon>
+    <Compile Include="Models\WebhookDeliveryLog.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebhookEndpoint.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebhookSubscription.cs">
+      <DependentUpon>PaymentsGatewayDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -340,15 +395,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\PaymentGatewayModel.Context.tt">
+    <Content Include="Models\PaymentsGatewayDbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PaymentGatewayModel.edmx</DependentUpon>
-      <LastGenOutput>PaymentGatewayModel.Context.cs</LastGenOutput>
+      <DependentUpon>PaymentsGatewayDbModel.edmx</DependentUpon>
+      <LastGenOutput>PaymentsGatewayDbModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\PaymentGatewayModel.tt">
+    <Content Include="Models\PaymentsGatewayDbModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PaymentGatewayModel.edmx</DependentUpon>
-      <LastGenOutput>PaymentGatewayModel.cs</LastGenOutput>
+      <DependentUpon>PaymentsGatewayDbModel.edmx</DependentUpon>
+      <LastGenOutput>PaymentsGatewayDbModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -356,13 +411,14 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\PaymentGatewayModel.edmx">
+    <EntityDeploy Include="Models\PaymentsGatewayDbModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PaymentGatewayModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>PaymentsGatewayDbModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\PaymentGatewayModel.edmx.diagram">
-      <DependentUpon>PaymentGatewayModel.edmx</DependentUpon>
+    <Content Include="Models\PaymentsGatewayDbModel.edmx.diagram">
+      <DependentUpon>PaymentsGatewayDbModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\WebApiPaymentGateway - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -388,6 +444,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Transactions\Create.cshtml" />
+    <Content Include="Views\Transactions\Delete.cshtml" />
+    <Content Include="Views\Transactions\Details.cshtml" />
+    <Content Include="Views\Transactions\Edit.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,26 +12,27 @@ namespace WebApiPaymentGateway.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PaymentMethod
+    public partial class Payout
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PaymentMethod()
+        public Payout()
         {
-            this.Transactions = new HashSet<Transaction>();
+            this.PayoutTransactions = new HashSet<PayoutTransaction>();
         }
     
-        public int PaymentMethodID { get; set; }
-        public int CustomerID { get; set; }
-        public string MethodType { get; set; }
-        public string ProviderToken { get; set; }
-        public string CardLast4 { get; set; }
-        public string CardBrand { get; set; }
-        public string BankCode { get; set; }
-        public bool IsDefault { get; set; }
+        public int PayoutId { get; set; }
+        public int MerchantId { get; set; }
+        public int BankAccountId { get; set; }
+        public string Reference { get; set; }
+        public decimal Amount { get; set; }
+        public string Status { get; set; }
+        public System.DateTime ScheduledFor { get; set; }
+        public Nullable<System.DateTime> PaidAt { get; set; }
         public System.DateTime CreatedAt { get; set; }
     
-        public virtual Customer Customer { get; set; }
+        public virtual MerchantBankAccount MerchantBankAccount { get; set; }
+        public virtual Merchant Merchant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<PayoutTransaction> PayoutTransactions { get; set; }
     }
 }

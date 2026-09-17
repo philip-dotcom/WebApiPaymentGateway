@@ -17,23 +17,23 @@ namespace WebApiPaymentGateway.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Refund()
         {
-            this.WalletLedgers = new HashSet<WalletLedger>();
+            this.WalletLedgerEntries = new HashSet<WalletLedgerEntry>();
         }
     
-        public long RefundID { get; set; }
-        public long TransactionID { get; set; }
-        public string RequestedByUser { get; set; }
-        public string ApprovedByUser { get; set; }
+        public int RefundId { get; set; }
+        public long TransactionId { get; set; }
         public decimal Amount { get; set; }
-        public string StatusCode { get; set; }
         public string Reason { get; set; }
+        public string Status { get; set; }
+        public Nullable<int> RequestedByMerchantUserId { get; set; }
+        public Nullable<int> ApprovedByInternalUserId { get; set; }
         public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> ApprovedAt { get; set; }
-        public Nullable<System.DateTime> CompletedAt { get; set; }
+        public Nullable<System.DateTime> ProcessedAt { get; set; }
     
-        public virtual RefundStatu RefundStatu { get; set; }
+        public virtual InternalUser InternalUser { get; set; }
+        public virtual MerchantUser MerchantUser { get; set; }
         public virtual Transaction Transaction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WalletLedger> WalletLedgers { get; set; }
+        public virtual ICollection<WalletLedgerEntry> WalletLedgerEntries { get; set; }
     }
 }
